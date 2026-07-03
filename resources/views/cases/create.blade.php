@@ -2,83 +2,87 @@
 
 @section('content')
 
-<h2 class="text-3xl font-bold mb-6">
-    Create New Legal Case
-</h2>
+<div class="max-w-4xl mx-auto">
 
-<form action="{{ route('cases.store') }}" method="POST">
+    <h2 class="text-3xl font-bold mb-6">
+        Create Legal Case
+    </h2>
 
-    @csrf
+    <form action="{{ route('cases.store') }}" method="POST">
 
-    <div class="mb-4">
-        <label class="block font-semibold">Title</label>
-        <input type="text"
-               name="title"
-               class="border rounded w-full p-2">
-    </div>
+        @csrf
 
-    <div class="mb-4">
-        <label class="block font-semibold">Description</label>
-        <textarea
-            name="description"
-            rows="5"
-            class="border rounded w-full p-2"></textarea>
-    </div>
+        <div class="mb-4">
+            <label>Title</label>
 
-    <div class="mb-4">
-        <label class="block font-semibold">Case Type</label>
+            <input
+                type="text"
+                name="title"
+                class="border rounded w-full p-2"
+                value="{{ old('title') }}">
+        </div>
 
-        <select
-            name="case_type"
-            class="border rounded w-full p-2">
+        <div class="mb-4">
+            <label>Description</label>
 
-            <option>Civil</option>
-            <option>Criminal</option>
-            <option>Family</option>
-            <option>Property</option>
+            <textarea
+                name="description"
+                class="border rounded w-full p-2">{{ old('description') }}</textarea>
+        </div>
 
-        </select>
+        <div class="mb-4">
+            <label>Case Type</label>
 
-    </div>
+            <select
+                name="case_type"
+                class="border rounded w-full p-2">
 
-    <div class="mb-4">
+                <option value="Civil">Civil</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Family">Family</option>
+                <option value="Property">Property</option>
 
-        <label class="block font-semibold">
-            Priority
-        </label>
+            </select>
+        </div>
 
-        <select
-            name="priority"
-            class="border rounded w-full p-2">
+        <div class="mb-4">
+            <label>Priority</label>
 
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
+            <select
+                name="priority"
+                class="border rounded w-full p-2">
 
-        </select>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
 
-    </div>
+            </select>
+        </div>
 
-    <div class="mb-4">
+        <div class="mb-4">
+            <label>Filing Date</label>
 
-        <label class="block font-semibold">
-            Court Name
-        </label>
+            <input
+                type="date"
+                name="filing_date"
+                class="border rounded w-full p-2">
+        </div>
 
-        <input
-            type="text"
-            name="court_name"
-            class="border rounded w-full p-2">
+        <div class="mb-4">
+            <label>Court Name</label>
 
-    </div>
+            <input
+                type="text"
+                name="court_name"
+                class="border rounded w-full p-2">
+        </div>
 
-    <button
-        class="bg-blue-600 text-white px-5 py-2 rounded">
+        <button class="bg-blue-600 text-white px-5 py-2 rounded">
+            Save Case
+        </button>
 
-        Save Case
+    </form>
 
-    </button>
-
-</form>
+</div>
 
 @endsection

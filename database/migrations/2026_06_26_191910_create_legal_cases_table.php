@@ -12,9 +12,12 @@ return new class extends Migration
 public function up(): void
 {
     Schema::create('legal_cases', function (Blueprint $table) {
+
         $table->id();
 
-        $table->foreignId('client_id')->constrained('users')->cascadeOnDelete();
+        $table->foreignId('client_id')
+              ->constrained('users')
+              ->cascadeOnDelete();
 
         $table->string('case_number')->unique();
 
@@ -26,32 +29,28 @@ public function up(): void
             'Civil',
             'Criminal',
             'Family',
-            'Property',
-            'Corporate',
-            'Cyber',
-            'Others'
+            'Property'
         ]);
 
         $table->enum('priority', [
             'Low',
             'Medium',
             'High'
-        ])->default('Medium');
+        ]);
 
         $table->enum('status', [
             'Pending',
-            'Assigned',
             'In Progress',
-            'On Hold',
             'Resolved',
             'Closed'
         ])->default('Pending');
 
-        $table->date('filing_date')->nullable();
+        $table->date('filing_date');
 
-        $table->string('court_name')->nullable();
+        $table->string('court_name');
 
         $table->timestamps();
+
     });
 }
 

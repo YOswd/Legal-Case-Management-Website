@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LegalCase;
+use App\Http\Requests\StoreLegalCaseRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class LegalCaseController extends Controller
@@ -12,7 +14,8 @@ class LegalCaseController extends Controller
      */
     public function index()
     {
-        //
+        $cases = LegalCase::latest()->get();
+        return view('cases.index', compact('cases'));
     }
 
     /**
@@ -26,11 +29,36 @@ class LegalCaseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLegalCaseRequest $request)
     {
-        //
+    // Get the latest case
+    $lastCase = LegalCase::latest()->first();
+
+    if ($lastCase) {
+        $lastNumber = (int) substr($lastCase->case_number, -4);
+        $nextNumber = $lastNumber + 1;
+    } else {
+        $nextNumber = 1;
     }
 
+    $caseNumber = 'CASE-' . date('Y') . '-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+    LegalCase::create([
+        'client_id' => Auth::id(),
+        'case_number' => $caseNumber,
+        'title' => $request->title,
+        'description' => $request->description,
+        'case_type' => $request->case_type,
+        'priority' => $request->priority,
+        'status' => 'Pending',
+        'filing_date' => $request->filing_date,
+        'court_name' => $request->court_name,
+    ]);
+
+    return redirect()
+        ->route('cases.index')
+        ->with('success', 'Case created successfully.');
+    }
     /**
      * Display the specified resource.
      */
