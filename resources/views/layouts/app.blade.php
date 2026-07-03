@@ -1,36 +1,95 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Case Management System</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<body class="bg-gray-100">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+<div class="min-h-screen flex">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+    {{-- Sidebar --}}
+    <aside class="w-64 bg-gray-900 text-white p-6">
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+        <h2 class="text-2xl font-bold mb-8">
+            ⚖️ LCMS
+        </h2>
+
+        <nav class="space-y-3 mt-8">
+
+    <a href="#" class="block p-3 rounded hover:bg-gray-700">
+        🏠 Dashboard
+    </a>
+
+    <a href="#" class="block p-3 rounded hover:bg-gray-700">
+        ⚖️ Cases
+    </a>
+
+    <a href="#" class="block p-3 rounded hover:bg-gray-700">
+        👨‍⚖️ Lawyers
+    </a>
+
+    <a href="#" class="block p-3 rounded hover:bg-gray-700">
+        📄 Reports
+    </a>
+
+</nav>
+
+    </aside>
+
+    {{-- Main Content --}}
+    <main class="flex-1 bg-gray-100">
+
+    <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
+
+        <div>
+            <h1 class="text-2xl font-bold">
+                Legal Case Management System
+            </h1>
         </div>
-    </body>
+
+        <div class="flex items-center gap-4">
+
+            <div class="text-right">
+
+                <p class="font-semibold">
+                    {{ Auth::user()->name }}
+                </p>
+
+                <p class="text-sm text-gray-500 capitalize">
+                    {{ Auth::user()->role }}
+                </p>
+
+            </div>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <button
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+
+                    Logout
+
+                </button>
+            </form>
+
+        </div>
+
+    </header>
+
+    <div class="p-8">
+
+        @yield('content')
+
+    </div>
+
+</main>
+
+</div>
+
+</body>
 </html>
