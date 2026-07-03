@@ -11,35 +11,21 @@ return new class extends Migration
         Schema::create('lawyer_profiles', function (Blueprint $table) {
 
             $table->id();
-
             $table->foreignId('user_id')
                   ->constrained()
                   ->cascadeOnDelete();
-
             $table->string('photo')->nullable();
-
-            $table->string('specialization');
-
+            $table->string('specialization')->nullable();
             $table->integer('experience')->default(0);
-
-            $table->string('qualification');
-
-            $table->string('bar_council_no')->unique();
-
+            $table->string('qualification')->nullable();
+            $table->string('bar_council_no')->nullable()->unique();
             $table->integer('consultation_fee')->default(0);
-
             $table->text('bio')->nullable();
-
             $table->string('phone')->nullable();
-
             $table->string('address')->nullable();
-
             $table->string('city')->nullable();
-
             $table->boolean('availability')->default(true);
-
             $table->decimal('rating',3,2)->default(0);
-
             $table->timestamps();
         });
     }
