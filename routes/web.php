@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\DashboardController as ClientDashboardController
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
 use App\Http\Controllers\LegalCaseController;
+use App\Http\Controllers\LawyerDirectoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,5 +50,11 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
     Route::post('/lawyer/profile', [LawyerProfileController::class, 'update'])
         ->name('lawyer.profile.update');
 });
+
+Route::get('/lawyers', [LawyerDirectoryController::class, 'index'])
+    ->name('lawyers.index');
+
+Route::get('/lawyers/{lawyer}', [LawyerDirectoryController::class, 'show'])
+    ->name('lawyers.show');
 
 require __DIR__.'/auth.php';
