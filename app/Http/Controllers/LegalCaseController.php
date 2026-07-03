@@ -72,15 +72,33 @@ class LegalCaseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+    $case = LegalCase::findOrFail($id);
+
+    return view('cases.edit', compact('case'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
+{
+    $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'case_type' => 'required',
+        'priority' => 'required',
+        'status' => 'required',
+        'filing_date' => 'required|date',
+        'court_name' => 'required|max:255',
+    ]);
+
+        $case = LegalCase::findOrFail($id);
+
+        $case->update($request->all());
+
+        return redirect()
+            ->route('cases.index')
+            ->with('success', 'Case updated successfully.');
     }
 
     /**
@@ -88,6 +106,12 @@ class LegalCaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       $case = LegalCase::findOrFail($id);
+
+       $case->delete();
+
+       return redirect()
+         ->route('cases.index')
+         ->with('success', 'Case deleted successfully.');
     }
 }

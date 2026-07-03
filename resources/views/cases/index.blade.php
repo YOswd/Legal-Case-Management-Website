@@ -19,6 +19,7 @@
 
 <table class="w-full mt-6 border border-gray-300">
 
+    <th class="border p-2">Actions</th>
     <thead class="bg-gray-200">
         <tr>
             <th class="border p-2">Case No</th>
@@ -26,6 +27,7 @@
             <th class="border p-2">Type</th>
             <th class="border p-2">Priority</th>
             <th class="border p-2">Status</th>
+            <th class="border p-2">Actions</th>
         </tr>
     </thead>
 
@@ -40,6 +42,32 @@
             <td class="border p-2">{{ $case->priority }}</td>
             <td class="border p-2">{{ $case->status }}</td>
         </tr>
+
+        <td class="border p-2">
+
+    <a href="{{ route('cases.edit', $case->id) }}"
+       class="bg-yellow-500 text-white px-3 py-1 rounded">
+        Edit
+    </a>
+
+    <form action="{{ route('cases.destroy', $case->id) }}"
+          method="POST"
+          class="inline">
+
+        @csrf
+        @method('DELETE')
+
+        <button
+            onclick="return confirm('Delete this case?')"
+            class="bg-red-600 text-white px-3 py-1 rounded">
+
+            Delete
+
+        </button>
+
+    </form>
+
+</td>
 
     @empty
 
