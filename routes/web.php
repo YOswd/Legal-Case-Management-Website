@@ -6,11 +6,15 @@ use App\Http\Controllers\Client\DashboardController as ClientDashboardController
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
 use App\Http\Controllers\LegalCaseController;
-use App\Http\Controllers\LawyerDirectoryController;
+use App\Http\Controllers\Public\PublicController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(PublicController::class)->group(function () {
+    Route::get('/', 'home')->name('home');
+    Route::get('/lawyers', 'lawyers')->name('lawyers.index');
+    Route::get('/lawyers/{lawyer}', 'show')->name('lawyers.show');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/contact', 'contact')->name('contact');
 });
 
 Route::middleware('auth')->group(function () {
@@ -26,10 +30,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('cases', LegalCaseController::class);
 
-});
-
-Route::get('/test', function () {
-    return "Test route works";
 });
 
 Route::middleware(['auth', 'role:lawyer'])->group(function () {
@@ -50,11 +50,5 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
     Route::post('/lawyer/profile', [LawyerProfileController::class, 'update'])
         ->name('lawyer.profile.update');
 });
-
-Route::get('/lawyers', [LawyerDirectoryController::class, 'index'])
-    ->name('lawyers.index');
-
-Route::get('/lawyers/{lawyer}', [LawyerDirectoryController::class, 'show'])
-    ->name('lawyers.show');
 
 require __DIR__.'/auth.php';
