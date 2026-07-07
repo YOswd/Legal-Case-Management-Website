@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\LegalCase;
 use App\Models\LawyerProfile;
+use App\Models\CaseRequest;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,5 +59,17 @@ class User extends Authenticatable
     public function lawyerProfile()
     {
         return $this->hasOne(LawyerProfile::class);
+    }
+
+    // Client sent requests
+    public function caseRequests()
+    {
+        return $this->hasMany(CaseRequest::class, 'client_id');
+    }
+
+    // Lawyer received requests
+    public function receivedRequests()
+    {
+        return $this->hasMany(CaseRequest::class, 'lawyer_id');
     }
 }
