@@ -86,4 +86,55 @@ class CaseRequestController extends Controller
 
         return view('client.requests.show', compact('caseRequest'));
     }
+
+    public function edit(CaseRequest $caseRequest)
+    {
+        abort_if($caseRequest->client_id != auth()->id(), 403);
+
+        if ($caseRequest->status != 'Pending') {
+            return back()->with('error', 'You can only edit pending requests.');
+        }
+
+        return view('client.requests.edit', compact('caseRequest'));
+    }
+
+    public function update(Request $request, CaseRequest $caseRequest)
+{
+    abort_if($caseRequest->client_id != auth()->id(), 403);
+
+    if ($caseRequest->status != 'Pending') {
+        return back()->with('error', 'You can only edit pending requests.');
+    }
+
+    $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'budget' => 'nullable|integer|min:0',
+    ]);
+
+    $caseRequest->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'budget' => $request->budget,
+    ]);
+
+    return redirect()
+        ->route('client.requests.show', $caseRequest)
+        ->with('success', 'Request updated successfully.');
+}
+
+    public function destroy(CaseRequest $caseRequest)
+{
+    abort_if($caseRequest->client_id != auth()->id(), 403);
+
+    if ($caseRequest->status != 'Pending') {
+        return back()->with('error', 'You can only cancel pending requests.');
+    }
+
+    $caseRequest->delete();
+
+    return redirect()
+        ->route('client.requests')
+        ->with('success', 'Request cancelled successfully.');
+}
 }

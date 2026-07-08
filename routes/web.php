@@ -72,6 +72,15 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::get('/client/requests/{caseRequest}', [CaseRequestController::class,'show'])
         ->name('client.requests.show');
+
+    Route::get('/client/requests/{caseRequest}/edit', [CaseRequestController::class, 'edit'])
+        ->name('client.requests.edit');
+
+    Route::put('/client/requests/{caseRequest}', [CaseRequestController::class, 'update'])
+        ->name('client.requests.update');
+
+    Route::delete('/client/requests/{caseRequest}', [CaseRequestController::class, 'destroy'])
+        ->name('client.requests.destroy');
 });
 
 require __DIR__.'/auth.php';

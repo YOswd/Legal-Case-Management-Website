@@ -20,9 +20,10 @@
 
         </p>
 
-        <form method="POST" action="{{ route('requests.store') }}">
+        <form method="POST" action="{{ route('client.requests.update', $caseRequest) }}">
 
             @csrf
+            @method('PUT')
 
             <input
                 type="hidden"
@@ -36,7 +37,8 @@
                 <input
                     type="text"
                     name="title"
-                    class="w-full border rounded p-2">
+                    class="w-full border rounded p-2"
+                    value="{{ old('title', $caseRequest->title) }}">
 
             </div>
 
@@ -47,40 +49,10 @@
                 <textarea
                     name="description"
                     rows="6"
-                    class="w-full border rounded p-2"></textarea>
+                    class="w-full border rounded p-2"
+                    value="{{ old('description', $caseRequest->description) }}"></textarea>
 
             </div>
-
-            @if($caseRequest->status == 'Pending')
-
-<div class="mt-8 flex gap-4">
-
-    <a href="{{ route('client.requests.edit', $caseRequest) }}"
-       class="bg-yellow-500 text-white px-5 py-2 rounded">
-
-        Edit
-
-    </a>
-
-    <form action="{{ route('client.requests.destroy', $caseRequest) }}"
-          method="POST">
-
-        @csrf
-        @method('DELETE')
-
-        <button
-            onclick="return confirm('Cancel this request?')"
-            class="bg-red-600 text-white px-5 py-2 rounded">
-
-            Cancel Request
-
-        </button>
-
-    </form>
-
-</div>
-
-@endif
 
             <div class="mb-5">
 
@@ -89,7 +61,8 @@
                 <input
                     type="number"
                     name="budget"
-                    class="w-full border rounded p-2">
+                    class="w-full border rounded p-2"
+                    value="{{ old('budget', $caseRequest->budget) }}">
 
             </div>
 
