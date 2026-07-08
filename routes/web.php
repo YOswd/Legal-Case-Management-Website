@@ -52,6 +52,9 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
     Route::patch('/lawyer/requests/{caseRequest}/reject', [RequestController::class, 'reject'])
         ->name('requests.reject');
+
+    Route::get('/lawyer/requests/{caseRequest}', [RequestController::class,'show'])
+        ->name('lawyer.requests.show');
 });
 
 Route::middleware(['auth', 'role:client'])->group(function () {
@@ -66,6 +69,9 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::get('/client/requests', [CaseRequestController::class, 'index'])
         ->name('client.requests');
+
+    Route::get('/client/requests/{caseRequest}', [CaseRequestController::class,'show'])
+        ->name('client.requests.show');
 });
 
 require __DIR__.'/auth.php';

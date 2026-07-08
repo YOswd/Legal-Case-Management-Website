@@ -39,4 +39,13 @@ class RequestController extends Controller
 
         return back()->with('success', 'Case request rejected.');
     }
+
+    public function show(CaseRequest $caseRequest)
+    {
+        abort_if($caseRequest->lawyer_id != auth()->id(),403);
+
+        $caseRequest->load('client');
+
+        return view('lawyer.requests.show', compact('caseRequest'));
+    }
 }

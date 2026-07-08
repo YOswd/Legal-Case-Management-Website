@@ -20,6 +20,7 @@
             <th class="border p-2">Title</th>
             <th class="border p-2">Budget</th>
             <th class="border p-2">Status</th>
+            <th class="border p-2">Actions</th>
         </tr>
     </thead>
 
@@ -39,6 +40,12 @@
             </td>
             <td class="border p-2">
                 {{ $request->status }}
+            </td>
+            <td class="border p-2">
+                <a href="{{ route('client.requests.show', $request) }}"
+                class="bg-blue-600 text-white px-3 py-1 rounded">
+                    View
+                </a>
             </td>
         </tr>
 

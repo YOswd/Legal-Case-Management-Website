@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LegalConnect Bangladesh</title>
+    <title>Legal Connect Bangladesh</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -20,7 +20,7 @@
                 <a href="{{ route('home') }}"
                    class="text-2xl font-bold text-blue-700">
 
-                    ⚖️ LegalConnect
+                    ⚖️ Legal Connect
 
                 </a>
 

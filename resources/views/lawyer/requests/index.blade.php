@@ -43,6 +43,14 @@
                 @if($request->status == 'Pending')
                     <div class="flex gap-2">
                         <form method="POST"
+                              action="{{ route('lawyer.requests.show',$request) }}">
+                            @csrf
+                            @method('PATCH')
+                            <button class="bg-green-600 text-white px-3 py-1 rounded">
+                                View
+                            </button>
+                        </form>
+                        <form method="POST"
                               action="{{ route('requests.accept', $request) }}">
                             @csrf
                             @method('PATCH')
