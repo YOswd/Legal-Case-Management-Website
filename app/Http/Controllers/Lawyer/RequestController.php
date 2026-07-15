@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Lawyer;
 
-use App\Http\Controllers\Controller;
+use App\Models\LegalCase;
 use App\Models\CaseRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
@@ -20,13 +21,47 @@ class RequestController extends Controller
 
     public function accept(CaseRequest $caseRequest)
     {
-        abort_if($caseRequest->lawyer_id !== auth()->id(), 403);
+        // Security: only the assigned lawyer can accept
+        if ($caseRequest->lawyer_id != auth()->id()) {
+            abort(403);
+        }
 
+        // Prevent duplicate processing
+        if ($caseRequest->status != 'Pending') {
+            return back()->with('error', 'This request has already been processed.');
+        }
+
+        // Update request status
         $caseRequest->update([
             'status' => 'Accepted'
         ]);
 
-        return back()->with('success', 'Case request accepted.');
+        if (LegalCase::where('case_request_id', $caseRequest->id)->exists()) {
+            return back()->with('error', 'A legal case has already been created for this request.');
+        }
+
+        // Create the legal case
+        LegalCase::firstOrCreate(
+        [
+            'case_request_id' => $caseRequest->id,
+        ],
+        [
+            'client_id'       => $caseRequest->client_id,
+            'lawyer_id'       => $caseRequest->lawyer_id,
+            'case_number'     => 'CASE-' . now()->format('Y') . '-' . str_pad($caseRequest->id, 5, '0', STR_PAD_LEFT),
+            'title'           => $caseRequest->title,
+            'description'     => $caseRequest->description,
+            'case_type'       => 'Civil',
+            'priority'        => 'Medium',
+            'status'          => 'Pending',
+            'filing_date'     => now()->toDateString(),
+            'court_name'      => 'Not Assigned',
+        ]
+        );
+
+        return redirect()
+            ->route('lawyer.requests')
+            ->with('success', 'Request accepted and legal case created successfully.');
     }
 
     public function reject(CaseRequest $caseRequest)

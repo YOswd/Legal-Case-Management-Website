@@ -4,26 +4,17 @@
 
 <div class="max-w-3xl mx-auto">
 
-    <h1 class="text-3xl font-bold mb-6">
-
-        Request Case
-
-    </h1>
+    <h1 class="text-3xl font-bold mb-6">Request Case</h1>
 
     <div class="bg-white shadow rounded-lg p-6">
 
         <p class="mb-6">
-
             Requesting Lawyer:
-
             <strong>{{ $lawyer->name }}</strong>
-
         </p>
 
         <form method="POST" action="{{ route('requests.store') }}">
-
             @csrf
-
             <input
                 type="hidden"
                 name="lawyer_id"
@@ -50,37 +41,6 @@
                     class="w-full border rounded p-2"></textarea>
 
             </div>
-
-            @if($caseRequest->status == 'Pending')
-
-<div class="mt-8 flex gap-4">
-
-    <a href="{{ route('client.requests.edit', $caseRequest) }}"
-       class="bg-yellow-500 text-white px-5 py-2 rounded">
-
-        Edit
-
-    </a>
-
-    <form action="{{ route('client.requests.destroy', $caseRequest) }}"
-          method="POST">
-
-        @csrf
-        @method('DELETE')
-
-        <button
-            onclick="return confirm('Cancel this request?')"
-            class="bg-red-600 text-white px-5 py-2 rounded">
-
-            Cancel Request
-
-        </button>
-
-    </form>
-
-</div>
-
-@endif
 
             <div class="mb-5">
 

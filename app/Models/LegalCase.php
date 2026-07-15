@@ -11,7 +11,9 @@ class LegalCase extends Model
     use HasFactory;
 
     protected $fillable = [
+        'case_request_id',
         'client_id',
+        'lawyer_id',
         'case_number',
         'title',
         'description',
@@ -19,11 +21,21 @@ class LegalCase extends Model
         'priority',
         'status',
         'filing_date',
-        'court_name'
+        'court_name',
     ];
 
     public function client()
     {
         return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function lawyer()
+    {
+        return $this->belongsTo(User::class, 'lawyer_id');
+    }
+
+    public function request()
+    {
+        return $this->belongsTo(CaseRequest::class, 'case_request_id');
     }
 }

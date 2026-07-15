@@ -92,32 +92,24 @@
 
         <div class="mt-8 flex gap-4">
 
-            <form method="POST"
-                  action="{{ route('requests.accept', $caseRequest) }}">
+            <form method="POST" action="{{ route('requests.accept', $caseRequest) }}">
 
                 @csrf
                 @method('PATCH')
 
-                <button
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded">
-
+                <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded">
                     Accept Request
-
                 </button>
 
             </form>
 
-            <form method="POST"
-                  action="{{ route('requests.reject', $caseRequest) }}">
+            <form method="POST" action="{{ route('requests.reject', $caseRequest) }}">
 
                 @csrf
                 @method('PATCH')
 
-                <button
-                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded">
-
+                <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded">
                     Reject Request
-
                 </button>
 
             </form>

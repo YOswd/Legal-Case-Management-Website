@@ -10,11 +10,9 @@ class CaseRequest extends Model
 
         'client_id',
         'lawyer_id',
-
         'title',
         'description',
         'budget',
-
         'status',
 
     ];
@@ -27,5 +25,10 @@ class CaseRequest extends Model
     public function lawyer()
     {
         return $this->belongsTo(User::class, 'lawyer_id');
+    }
+
+    public function legalCase()
+    {
+        return $this->hasOne(LegalCase::class);
     }
 }
