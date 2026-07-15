@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Models\User;
+use App\Models\LegalCase;
 use App\Models\CaseRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -99,42 +100,63 @@ class CaseRequestController extends Controller
     }
 
     public function update(Request $request, CaseRequest $caseRequest)
-{
-    abort_if($caseRequest->client_id != auth()->id(), 403);
+    {
+        abort_if($caseRequest->client_id != auth()->id(), 403);
 
-    if ($caseRequest->status != 'Pending') {
-        return back()->with('error', 'You can only edit pending requests.');
+        if ($caseRequest->status != 'Pending') {
+            return back()->with('error', 'You can only edit pending requests.');
+        }
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'budget' => 'nullable|integer|min:0',
+        ]);
+
+        $caseRequest->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'budget' => $request->budget,
+        ]);
+
+        return redirect()
+            ->route('client.requests.show', $caseRequest)
+            ->with('success', 'Request updated successfully.');
     }
-
-    $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'budget' => 'nullable|integer|min:0',
-    ]);
-
-    $caseRequest->update([
-        'title' => $request->title,
-        'description' => $request->description,
-        'budget' => $request->budget,
-    ]);
-
-    return redirect()
-        ->route('client.requests.show', $caseRequest)
-        ->with('success', 'Request updated successfully.');
-}
 
     public function destroy(CaseRequest $caseRequest)
-{
-    abort_if($caseRequest->client_id != auth()->id(), 403);
+    {
+        abort_if($caseRequest->client_id != auth()->id(), 403);
 
-    if ($caseRequest->status != 'Pending') {
-        return back()->with('error', 'You can only cancel pending requests.');
+        if ($caseRequest->status != 'Pending') {
+            return back()->with('error', 'You can only cancel pending requests.');
+        }
+
+        $caseRequest->delete();
+
+        return redirect()
+            ->route('client.requests')
+            ->with('success', 'Request cancelled successfully.');
     }
 
-    $caseRequest->delete();
+    public function myCases()
+    {
+        $cases = LegalCase::with('lawyer')
+            ->where('client_id', auth()->id())
+            ->latest()
+            ->get();
 
-    return redirect()
-        ->route('client.requests')
-        ->with('success', 'Request cancelled successfully.');
-}
+        return view('client.cases.index', compact('cases'));
+    }
+
+    public function caseDetails(LegalCase $legalCase)
+    {
+        if ($legalCase->client_id != auth()->id()) {
+            abort(403);
+        }
+
+        $legalCase->load('lawyer');
+
+        return view('client.cases.show', compact('legalCase'));
+    }
 }

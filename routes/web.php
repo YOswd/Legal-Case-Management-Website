@@ -56,6 +56,18 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
     Route::get('/lawyer/requests/{caseRequest}', [RequestController::class,'show'])
         ->name('lawyer.requests.show');
+
+    Route::get('/lawyer/cases', [LawyerLegalCaseController::class, 'index'])
+        ->name('lawyer.cases');
+
+    Route::get('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'show'])
+        ->name('lawyer.cases.show');
+
+    Route::get('/lawyer/cases/{legalCase}/edit', [LawyerLegalCaseController::class, 'edit'])
+        ->name('lawyer.cases.edit');
+
+    Route::put('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'update'])
+        ->name('lawyer.cases.update');
 });
 
 Route::middleware(['auth', 'role:client'])->group(function () {
@@ -82,18 +94,12 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::delete('/client/requests/{caseRequest}', [CaseRequestController::class, 'destroy'])
         ->name('client.requests.destroy');
+
+    Route::get('/client/cases', [CaseRequestController::class, 'myCases'])
+        ->name('client.cases');
+
+    Route::get('/client/cases/{legalCase}', [CaseRequestController::class, 'caseDetails'])
+        ->name('client.cases.show');
 });
-
-Route::get('/lawyer/cases', [LawyerLegalCaseController::class, 'index'])
-    ->name('lawyer.cases');
-
-Route::get('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'show'])
-    ->name('lawyer.cases.show');
-
-Route::get('/lawyer/cases/{legalCase}/edit', [LawyerLegalCaseController::class, 'edit'])
-    ->name('lawyer.cases.edit');
-
-Route::put('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'update'])
-    ->name('lawyer.cases.update');
 
 require __DIR__.'/auth.php';

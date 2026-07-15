@@ -43,8 +43,8 @@
         <a href="{{ route('client.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
             🏠 Dashboard
         </a>
-        <a href="{{ route('client.requests') }}" class="block p-3 rounded hover:bg-gray-700">
-            📋 My Case Requests
+        <a href="{{ route('client.cases') }}" class="block p-3 rounded hover:bg-gray-700">
+            ⚖️ My Legal Cases
         </a>
         <a href="{{ route('lawyers.index') }}" class="block p-3 rounded hover:bg-gray-700">
             👨‍⚖️ Browse Lawyers
