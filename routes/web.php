@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
+use App\Http\Controllers\Lawyer\LegalCaseController as LawyerLegalCaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PublicController::class)->group(function () {
@@ -82,5 +83,17 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::delete('/client/requests/{caseRequest}', [CaseRequestController::class, 'destroy'])
         ->name('client.requests.destroy');
 });
+
+Route::get('/lawyer/cases', [LawyerLegalCaseController::class, 'index'])
+    ->name('lawyer.cases');
+
+Route::get('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'show'])
+    ->name('lawyer.cases.show');
+
+Route::get('/lawyer/cases/{legalCase}/edit', [LawyerLegalCaseController::class, 'edit'])
+    ->name('lawyer.cases.edit');
+
+Route::put('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'update'])
+    ->name('lawyer.cases.update');
 
 require __DIR__.'/auth.php';
