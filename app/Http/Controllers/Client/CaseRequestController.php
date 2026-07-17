@@ -159,4 +159,24 @@ class CaseRequestController extends Controller
 
         return view('client.cases.show', compact('legalCase'));
     }
+
+    public function appealForm(LegalCase $legalCase)
+    {
+        return view('client.cases.appeal', compact('legalCase'));
+    }
+
+    public function appealStore(Request $request, LegalCase $legalCase)
+    {
+        $request->validate(['appeal_court'=>'required']);
+
+        $legalCase->update([
+            'appealed'=>true,
+            'appeal_court'=>$request->appeal_court,
+            'appeal_date'=>now()
+        ]);
+
+        return redirect()
+            ->route('client.cases.show',$legalCase)
+            ->with('success','Appeal submitted successfully.');
+    }
 }

@@ -54,6 +54,54 @@
             </div>
         </div>
 
+    <div class="bg-white rounded-lg shadow p-6 mt-6">
+
+    <div class="mt-6 bg-green-100 border border-green-300 rounded p-5">
+
+        <h3 class="font-bold text-lg mb-3">Appeal Submitted</h3>
+
+        <p>
+            <strong>Appeal Court:</strong>
+            {{ $legalCase->appeal_court }}
+        </p>
+
+        <p>
+            <strong>Appeal Date:</strong>
+            {{ $legalCase->appeal_date }}
+        </p>
+
+   </div>
+
+    <h3 class="text-xl font-bold mb-4">
+        Court Information
+    </h3>
+
+    <div class="grid grid-cols-2 gap-6">
+
+        <div>
+            <strong>Court Level</strong>
+            <p>{{ $legalCase->court_level ?? 'Not Assigned' }}</p>
+        </div>
+
+        <div>
+            <strong>Court Name</strong>
+            <p>{{ $legalCase->court_name }}</p>
+        </div>
+
+        <div>
+            <strong>Hearing Date</strong>
+            <p>{{ $legalCase->hearing_date ?? 'Not Scheduled' }}</p>
+        </div>
+
+        <div>
+            <strong>Hearing Time</strong>
+            <p>{{ $legalCase->hearing_time ?? 'Not Scheduled' }}</p>
+        </div>
+
+    </div>
+
+</div>
+
         <div class="mt-8">
             <a href="{{ route('lawyer.cases.edit', $legalCase) }}"
                class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded">

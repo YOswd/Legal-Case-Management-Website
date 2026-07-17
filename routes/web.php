@@ -130,29 +130,37 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::get('/client/cases/{legalCase}', [CaseRequestController::class, 'caseDetails'])
         ->name('client.cases.show');
+
+    Route::get('/client/cases/{legalCase}/appeal', [CaseRequestController::class,'appealForm'])
+        ->name('client.cases.appeal');
+
+Route::post('/client/cases/{legalCase}/appeal', [CaseRequestController::class,'appealStore'])
+        ->name('client.cases.appeal.store');
 });
 
 Route::middleware(['auth', 'role:court_clerk'])->group(function () {
 
     Route::get('/court-clerk/dashboard', [CourtClerkDashboardController::class, 'index'])
-        ->name('courtclerk.dashboard');
+        ->name('court_clerk.dashboard');
 
     Route::get('/court-clerk/filings', [CaseController::class,'index'])
-        ->name('courtclerk.filings');
+        ->name('court_clerk.filings');
 
     Route::get('/court-clerk/filings/{legalCase}', [CaseController::class,'show'])
-        ->name('courtclerk.filings.show');
+        ->name('court_clerk.filings.show');
 
     Route::put('/court-clerk/filings/{legalCase}', [CaseController::class,'verify'])
-        ->name('courtclerk.filings.verify');
+        ->name('court_clerk.filings.verify');
 
     Route::get('/court-clerk/hearings', function () {
         return 'Hearing Schedule';
-    })->name('courtclerk.hearings');
+    })->name('court_clerk.hearings');
 
-    Route::get('/court-clerk/judgments', function () {
-        return 'Judgments';
-    })->name('courtclerk.judgments');
+    Route::get('/court-clerk/judgments/{legalCase}', [CaseController::class,'judgmentForm'])
+        ->name('court_clerk.judgments.form');
+
+    Route::put('/court-clerk/judgments/{legalCase}', [CaseController::class,'publishJudgment'])
+        ->name('court_clerk.judgments.publish');
 
 });
 

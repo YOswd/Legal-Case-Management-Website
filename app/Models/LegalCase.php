@@ -25,6 +25,11 @@ class LegalCase extends Model
         'court_level',
         'hearing_date',
         'hearing_time',
+        'appealed',
+        'appeal_court',
+        'appeal_date',
+        'judgment',
+        'judgment_date',
     ];
 
     public function client()

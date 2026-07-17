@@ -44,11 +44,10 @@ Pending Court Filings
         <td class="p-3">
             {{ $case->status }}
         </td>
-        <td class="p-3">
-            <a href="#" class="bg-blue-600 text-white px-3 py-2 rounded">
-                Review
-            </a>
-        </td>
+        <a href="{{ route('court_clerk.filings.show', $case) }}"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+            Verify Filing
+        </a>
 
     </tr>
 
