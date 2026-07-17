@@ -22,6 +22,9 @@ class LegalCase extends Model
         'status',
         'filing_date',
         'court_name',
+        'court_level',
+        'hearing_date',
+        'hearing_time',
     ];
 
     public function client()

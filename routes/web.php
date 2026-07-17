@@ -12,6 +12,7 @@ use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
 use App\Http\Controllers\Lawyer\LegalCaseController as LawyerLegalCaseController;
 use App\Http\Controllers\CourtClerk\DashboardController as CourtClerkDashboardController;
+use App\Http\Controllers\CourtClerk\CaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PublicController::class)->group(function () {
@@ -136,9 +137,14 @@ Route::middleware(['auth', 'role:court_clerk'])->group(function () {
     Route::get('/court-clerk/dashboard', [CourtClerkDashboardController::class, 'index'])
         ->name('courtclerk.dashboard');
 
-    Route::get('/court-clerk/filings', function () {
-        return 'Pending Filings';
-    })->name('courtclerk.filings');
+    Route::get('/court-clerk/filings', [CaseController::class,'index'])
+        ->name('courtclerk.filings');
+
+    Route::get('/court-clerk/filings/{legalCase}', [CaseController::class,'show'])
+        ->name('courtclerk.filings.show');
+
+    Route::put('/court-clerk/filings/{legalCase}', [CaseController::class,'verify'])
+        ->name('courtclerk.filings.verify');
 
     Route::get('/court-clerk/hearings', function () {
         return 'Hearing Schedule';
