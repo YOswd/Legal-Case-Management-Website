@@ -12,18 +12,17 @@
     
     {{-- Sidebar --}}
     <aside class="w-64 bg-gray-900 text-white p-6">
-        <h2 class="text-2xl font-bold mb-8">
-            ⚖️ LCMS
-        </h2>
+        <h2 class="text-2xl font-bold mb-8">⚖️ LCMS</h2>
 
     <nav class="space-y-3 mt-8">
 
     @if(Auth::user()->role == 'admin')
+
         <a href="{{ route('admin.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
             🏠 Dashboard
         </a>
-        <a href="{{ route('cases.index') }}" class="block p-3 rounded hover:bg-gray-700">
-            ⚖️ Manage Cases
+        <a href="{{ route('admin.cases.index') }}" class="block p-3 rounded hover:bg-gray-700">
+            📂 Manage Legal Cases
         </a>
 
     @elseif(Auth::user()->role == 'lawyer')

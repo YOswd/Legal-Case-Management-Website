@@ -14,8 +14,11 @@ class LegalCaseController extends Controller
      */
     public function index()
     {
-        $cases = LegalCase::latest()->get();
-        return view('cases.index', compact('cases'));
+        $cases = LegalCase::with(['client', 'lawyer'])
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.cases.index', compact('cases'));
     }
 
     /**

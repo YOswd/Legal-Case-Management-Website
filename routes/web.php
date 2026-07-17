@@ -33,6 +33,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('cases', LegalCaseController::class);
 
+    Route::get('/admin/legal-cases', [LegalCaseController::class, 'index'])
+        ->name('admin.cases.index');
+
+    Route::get('/admin/legal-cases/{legalCase}', [LegalCaseController::class, 'show'])
+        ->name('admin.cases.show');
+
+    Route::get('/admin/legal-cases/{legalCase}/edit', [LegalCaseController::class, 'edit'])
+        ->name('admin.cases.edit');
+
+    Route::put('/admin/legal-cases/{legalCase}', [LegalCaseController::class, 'update'])
+        ->name('admin.cases.update');
+
+    Route::delete('/admin/legal-cases/{legalCase}', [LegalCaseController::class, 'destroy'])
+        ->name('admin.cases.destroy');
+
 });
 
 Route::middleware(['auth', 'role:lawyer'])->group(function () {
