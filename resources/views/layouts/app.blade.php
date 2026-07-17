@@ -52,6 +52,21 @@
             👨‍⚖️ Browse Lawyers
         </a>
 
+    @elseif(Auth::user()->role == 'court_clerk')
+
+        <a href="{{ route('courtclerk.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
+            🏛 Dashboard
+        </a>
+        <a href="#" class="block p-3 rounded hover:bg-gray-700">
+            📂 Pending Filings
+        </a>
+        <a href="#" class="block p-3 rounded hover:bg-gray-700">
+            📅 Hearing Schedule
+        </a>
+        <a href="#" class="block p-3 rounded hover:bg-gray-700">
+            ⚖ Judgments
+        </a>
+
     @endif
 
     </nav>

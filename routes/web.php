@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\DashboardController as ClientDashboardController
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
 use App\Http\Controllers\Lawyer\LegalCaseController as LawyerLegalCaseController;
+use App\Http\Controllers\CourtClerk\DashboardController as CourtClerkDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PublicController::class)->group(function () {
@@ -128,6 +129,25 @@ Route::middleware(['auth', 'role:client'])->group(function () {
 
     Route::get('/client/cases/{legalCase}', [CaseRequestController::class, 'caseDetails'])
         ->name('client.cases.show');
+});
+
+Route::middleware(['auth', 'role:court_clerk'])->group(function () {
+
+    Route::get('/court-clerk/dashboard', [CourtClerkDashboardController::class, 'index'])
+        ->name('courtclerk.dashboard');
+
+    Route::get('/court-clerk/filings', function () {
+        return 'Pending Filings';
+    })->name('courtclerk.filings');
+
+    Route::get('/court-clerk/hearings', function () {
+        return 'Hearing Schedule';
+    })->name('courtclerk.hearings');
+
+    Route::get('/court-clerk/judgments', function () {
+        return 'Judgments';
+    })->name('courtclerk.judgments');
+
 });
 
 require __DIR__.'/auth.php';
