@@ -152,16 +152,24 @@ Route::middleware(['auth', 'role:court_clerk'])->group(function () {
     Route::put('/court-clerk/filings/{legalCase}', [CaseController::class,'verify'])
         ->name('court_clerk.filings.verify');
 
-    Route::get('/court-clerk/hearings', function () {
-        return 'Hearing Schedule';
-    })->name('court_clerk.hearings');
-
     Route::get('/court-clerk/judgments/{legalCase}', [CaseController::class,'judgmentForm'])
         ->name('court_clerk.judgments.form');
 
     Route::put('/court-clerk/judgments/{legalCase}', [CaseController::class,'publishJudgment'])
         ->name('court_clerk.judgments.publish');
 
+    Route::get('/court-clerk/hearings/{legalCase}', [CaseController::class, 'hearingForm'])
+        ->name('court_clerk.hearings.form');
+
+    Route::put('/court-clerk/hearings/{legalCase}', [CaseController::class, 'scheduleHearing'])
+        ->name('court_clerk.hearings.schedule');
+
 });
+
+Route::post('/cases/{legalCase}/documents', [DocumentController::class,'store'])
+    ->name('documents.store');
+
+Route::get('/documents/{document}', [DocumentController::class,'download'])
+    ->name('documents.download');
 
 require __DIR__.'/auth.php';

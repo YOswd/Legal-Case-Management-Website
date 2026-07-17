@@ -46,4 +46,9 @@ class LegalCase extends Model
     {
         return $this->belongsTo(CaseRequest::class, 'case_request_id');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(LegalDocument::class);
+    }
 }

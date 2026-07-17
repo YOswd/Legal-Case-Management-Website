@@ -111,6 +111,99 @@
 
     </div>
 
+    <form
+method="POST"
+action="{{ route('documents.store',$legalCase) }}"
+enctype="multipart/form-data">
+
+@csrf
+
+<input
+type="text"
+name="title"
+placeholder="Document Title"
+class="border rounded p-2 w-full mb-2">
+
+<select
+name="document_type"
+class="border rounded p-2 w-full mb-2">
+
+<option>Evidence</option>
+
+<option>Legal Notice</option>
+
+<option>Judgment</option>
+
+<option>Other</option>
+
+</select>
+
+<input
+type="file"
+name="file"
+class="mb-3">
+
+<button
+class="bg-green-600 text-white px-5 py-2 rounded">
+
+Upload Document
+
+</button>
+
+</form>
+
+<h3 class="text-xl font-bold mt-8">
+
+Documents
+
+</h3>
+
+<table class="w-full mt-3">
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>Type</th>
+
+<th>Download</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+@foreach($legalCase->documents as $document)
+
+<tr>
+
+<td>{{ $document->title }}</td>
+
+<td>{{ $document->document_type }}</td>
+
+<td>
+
+<a
+href="{{ route('documents.download',$document) }}"
+class="text-blue-600">
+
+Download
+
+</a>
+
+</td>
+
+</tr>
+
+@endforeach
+
+</tbody>
+
+</table>
+
 </div>
 
 @endsection

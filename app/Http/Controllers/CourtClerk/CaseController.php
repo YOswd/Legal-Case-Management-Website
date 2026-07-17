@@ -67,4 +67,31 @@ class CaseController extends Controller
             ->route('court_clerk.filings')
             ->with('success','Judgment published successfully.');
     }
+
+    public function hearingForm(LegalCase $legalCase)
+    {
+        return view('courtclerk.hearings.show', compact('legalCase'));
+    }
+
+    public function scheduleHearing(Request $request, LegalCase $legalCase)
+    {
+        $request->validate([
+            'hearing_date' => 'required|date',
+            'hearing_time' => 'required',
+            'court_name' => 'required',
+            'court_level' => 'required',
+        ]);
+
+        $legalCase->update([
+            'hearing_date' => $request->hearing_date,
+            'hearing_time' => $request->hearing_time,
+            'court_name' => $request->court_name,
+            'court_level' => $request->court_level,
+            'status' => 'In Progress'
+        ]);
+
+        return redirect()
+            ->route('court_clerk.filings')
+            ->with('success', 'Hearing scheduled successfully.');
+    }
 }
