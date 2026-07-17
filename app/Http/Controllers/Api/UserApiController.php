@@ -9,9 +9,7 @@ class UserApiController extends Controller
 {
     public function index()
     {
-        return response()->json(
-            User::all()
-        );
+        return response()->json(User::all());
     }
 
     public function show(User $user)

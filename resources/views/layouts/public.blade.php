@@ -54,25 +54,19 @@
 
                         <a href="{{ route(auth()->user()->role.'.dashboard') }}"
                            class="bg-blue-600 text-white px-4 py-2 rounded">
-
                             Dashboard
-
                         </a>
 
                     @else
 
                         <a href="{{ route('login') }}"
                            class="px-4 py-2 border rounded">
-
                             Login
-
                         </a>
 
                         <a href="{{ route('register') }}"
                            class="bg-blue-600 text-white px-4 py-2 rounded">
-
                             Register
-
                         </a>
 
                     @endauth

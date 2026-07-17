@@ -50,12 +50,12 @@
             Edit
         </a>
 
-        <form action="{{ route('client.requests.destroy', $caseRequest) }}" method="POST">
+        <form action="{{ route('client.requests.destroy', $caseRequest) }}"
+        method="POST" class="delete-form">
             @csrf
             @method('DELETE')
 
-            <button onclick="return confirm('Cancel this request?')"
-            class="bg-red-600 text-white px-5 py-2 rounded">
+            <button class="bg-red-600 text-white px-5 py-2 rounded">
                 Cancel Request
             </button>
          </form>
