@@ -6,6 +6,27 @@
 
     <h1 class="text-3xl font-bold mb-6">All Legal Cases</h1>
 
+    <form method="GET" class="mb-6 flex gap-3">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by case number or title..."
+        value="{{ request('search') }}"
+        class="border rounded p-2 w-96">
+
+    <select name="status" class="border rounded p-2">
+        <option value="">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Resolved">Resolved</option>
+        <option value="Closed">Closed</option>
+    </select>
+
+        <button class="bg-blue-600 text-white px-5 py-2 rounded">Search</button>
+
+    </form>
+
     <div class="bg-white rounded-lg shadow overflow-hidden">
 
         <table class="w-full">

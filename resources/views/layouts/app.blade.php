@@ -24,6 +24,9 @@
         <a href="{{ route('admin.cases.index') }}" class="block p-3 rounded hover:bg-gray-700">
             📂 Manage Legal Cases
         </a>
+        <a href="{{ route('admin.users.index') }}" class="block p-3 rounded hover:bg-gray-700">
+            👥 Manage Users
+        </a>
 
     @elseif(Auth::user()->role == 'lawyer')
 

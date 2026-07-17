@@ -12,11 +12,24 @@ class LegalCaseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cases = LegalCase::with(['client', 'lawyer'])
-            ->latest()
-            ->paginate(10);
+        $query = LegalCase::with(['client', 'lawyer']);
+
+        // Search
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('case_number', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('title', 'LIKE', '%' . $request->search . '%');
+            });
+        }
+
+        // Status Filter
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $cases = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.cases.index', compact('cases'));
     }

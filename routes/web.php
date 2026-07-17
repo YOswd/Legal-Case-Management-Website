@@ -5,6 +5,7 @@ use App\Http\Controllers\LegalCaseController;
 use App\Http\Controllers\Client\CaseRequestController;
 use App\Http\Controllers\Lawyer\RequestController;
 use App\Http\Controllers\Public\PublicController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
@@ -47,6 +48,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/admin/legal-cases/{legalCase}', [LegalCaseController::class, 'destroy'])
         ->name('admin.cases.destroy');
+    
+    Route::get('/admin/users', [UserController::class, 'index'])
+        ->name('admin.users.index');
+
+    Route::get('/admin/users/{user}', [UserController::class, 'show'])
+        ->name('admin.users.show');
+
+    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])
+        ->name('admin.users.edit');
+
+    Route::put('/admin/users/{user}', [UserController::class, 'update'])
+        ->name('admin.users.update');
 
 });
 
