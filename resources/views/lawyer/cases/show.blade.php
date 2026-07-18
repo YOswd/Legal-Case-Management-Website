@@ -54,6 +54,10 @@
             </div>
         </div>
 
+        <a href="{{ route('lawyer.documents', $legalCase) }}" class="btn btn-primary">
+            📄 Case Documents
+        </a>
+
     <div class="bg-white rounded-lg shadow p-6 mt-6">
 
     <div class="mt-6 bg-green-100 border border-green-300 rounded p-5">

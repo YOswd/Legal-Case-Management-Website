@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(CaseRequest::class, 'lawyer_id');
     }
+
+    public function uploadedDocuments()
+    {
+        return $this->hasMany(LegalDocument::class,'uploaded_by');
+    }
 }

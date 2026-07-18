@@ -41,14 +41,32 @@ Pending Court Filings
         <td class="p-3">
             {{ $case->title }}
         </td>
-        <td class="p-3">
-            {{ $case->status }}
-        </td>
+        <td>
+    @if($case->status == 'Pending')
+        <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">
+            Pending
+        </span>
+
+    @elseif($case->status == 'In Progress')
+        <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded">
+            In Progress
+        </span>
+
+    @elseif($case->status == 'Resolved')
+        <span class="bg-green-200 text-green-800 px-2 py-1 rounded">
+            Resolved
+        </span>
+
+    @endif
+</td>
         <a href="{{ route('court_clerk.filings.show', $case) }}"
         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
             Verify Filing
         </a>
-
+        <a href="{{ route('court_clerk.documents', $case) }}"
+   class="bg-blue-500 text-white px-3 py-1 rounded">
+    Documents
+</a>
     </tr>
 
     @endforeach

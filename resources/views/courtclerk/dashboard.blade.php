@@ -2,23 +2,51 @@
 
 @section('content')
 
-<h1 class="text-3xl font-bold mb-6">
-Court Clerk Dashboard
+<h1 class="text-3xl font-bold mb-8">
+    Court Clerk Dashboard
 </h1>
 
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-    <div class="bg-white shadow rounded-lg p-6">
+<div class="bg-white p-6 rounded shadow">
+    <h3 class="text-gray-500">
         Pending Filings
-    </div>
+    </h3>
 
-    <div class="bg-white shadow rounded-lg p-6">
-        Hearing Schedule
-    </div>
+    <p class="text-3xl font-bold">
+        {{ $pendingFilings }}
+    </p>
+</div>
 
-    <div class="bg-white shadow rounded-lg p-6">
-        Judgments
-    </div>
+<div class="bg-white p-6 rounded shadow">
+    <h3 class="text-gray-500">
+        Active Cases
+    </h3>
+
+    <p class="text-3xl font-bold">
+        {{ $activeCases }}
+    </p>
+</div>
+
+<div class="bg-white p-6 rounded shadow">
+    <h3 class="text-gray-500">
+        Upcoming Hearings
+    </h3>
+
+    <p class="text-3xl font-bold">
+        {{ $upcomingHearings }}
+    </p>
+</div>
+
+<div class="bg-white p-6 rounded shadow">
+    <h3 class="text-gray-500">
+        Resolved Cases
+    </h3>
+
+    <p class="text-3xl font-bold">
+        {{ $resolvedCases }}
+    </p>
+</div>
 
 </div>
 

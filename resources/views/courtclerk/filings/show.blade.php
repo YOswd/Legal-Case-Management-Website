@@ -32,8 +32,75 @@
 
     </div>
 
-    <form method="POST"
-          action="{{ route('court_clerk.filings.verify',$legalCase) }}">
+    <div class="card mt-4">
+    <div class="card-header">
+        Submitted Court Documents
+    </div>
+
+    <div class="card-body">
+
+        @if($legalCase->documents->count())
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Title</th>
+
+                        <th>Type</th>
+
+                        <th>Uploaded By</th>
+
+                        <th>Download</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                @foreach($legalCase->documents as $document)
+
+                    <tr>
+
+                        <td>{{ $document->title }}</td>
+
+                        <td>{{ $document->document_type }}</td>
+
+                        <td>{{ $document->uploader->name }}</td>
+
+                        <td>
+
+                            <a
+                                href="{{ route('lawyer.documents.download',$document) }}"
+                                class="btn btn-success btn-sm">
+
+                                Download
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                @endforeach
+
+                </tbody>
+
+            </table>
+
+        @else
+
+            <p>No documents uploaded.</p>
+
+        @endif
+
+    </div>
+</div>
+
+    <form method="POST" action="{{ route('court_clerk.filings.verify',$legalCase) }}">
 
         @csrf
         @method('PUT')

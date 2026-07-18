@@ -38,7 +38,13 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('lawyer.dashboard');
         }
 
+        if ($user->role == 'client') {
         return redirect()->route('client.dashboard');
+        }
+
+        if ($user->role == 'court_clerk') {
+        return redirect()->route('court_clerk.dashboard');
+        }
     }
 
     /**

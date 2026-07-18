@@ -87,11 +87,66 @@ class CaseController extends Controller
             'hearing_time' => $request->hearing_time,
             'court_name' => $request->court_name,
             'court_level' => $request->court_level,
+            'courtroom' => $request->courtroom,
             'status' => 'In Progress'
         ]);
 
         return redirect()
             ->route('court_clerk.filings')
             ->with('success', 'Hearing scheduled successfully.');
+    }
+
+    public function resultForm(LegalCase $legalCase)
+    {
+        return view('courtclerk.hearings.result', compact('legalCase'));
+    }
+
+    public function saveResult(Request $request, LegalCase $legalCase)
+    {
+        $request->validate([
+            'hearing_status' => 'required',
+            'hearing_result' => 'nullable|string',
+            'next_hearing_date' => 'nullable|date',
+        ]);
+
+        $legalCase->update([
+            'hearing_status' => $request->hearing_status,
+            'hearing_result' => $request->hearing_result,
+            'next_hearing_date' => $request->next_hearing_date,
+        ]);
+
+        return redirect()
+            ->route('court_clerk.filings')
+            ->with('success', 'Hearing result updated successfully.');
+    }
+
+    public function appeals()
+    {
+        $cases = LegalCase::with(['client','lawyer'])
+            ->where('appealed', true)
+            ->latest()
+            ->get();
+
+        return view('courtclerk.appeals.index', compact('cases'));
+    }
+
+    public function hearings()
+    {
+        $cases = LegalCase::whereNotNull('hearing_date')
+            ->with(['client','lawyer'])
+            ->orderBy('hearing_date')
+            ->get();
+
+        return view('courtclerk.hearings.index', compact('cases'));
+    }
+
+    public function judgments()
+    {
+        $cases = LegalCase::whereNotNull('judgment')
+            ->with(['client','lawyer'])
+            ->latest()
+            ->get();
+
+        return view('courtclerk.judgments.index', compact('cases'));
     }
 }

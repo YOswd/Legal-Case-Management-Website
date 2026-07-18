@@ -6,12 +6,15 @@ use App\Http\Controllers\Client\CaseRequestController;
 use App\Http\Controllers\Lawyer\RequestController;
 use App\Http\Controllers\Public\PublicController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Lawyer\DocumentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Client\DashboardController as ClientDashboardController;
+use App\Http\Controllers\Client\DocumentController as ClientDocumentController;
 use App\Http\Controllers\Lawyer\DashboardController as LawyerDashboardController;
 use App\Http\Controllers\Lawyer\ProfileController as LawyerProfileController;
 use App\Http\Controllers\Lawyer\LegalCaseController as LawyerLegalCaseController;
 use App\Http\Controllers\CourtClerk\DashboardController as CourtClerkDashboardController;
+use App\Http\Controllers\CourtClerk\DocumentController as CourtClerkDocumentController;
 use App\Http\Controllers\CourtClerk\CaseController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +101,15 @@ Route::middleware(['auth', 'role:lawyer'])->group(function () {
 
     Route::put('/lawyer/cases/{legalCase}', [LawyerLegalCaseController::class, 'update'])
         ->name('lawyer.cases.update');
+
+    Route::get('/lawyer/cases/{legalCase}/documents', [DocumentController::class,'index'])
+        ->name('lawyer.documents');
+
+    Route::post( '/lawyer/cases/{legalCase}/documents', [DocumentController::class,'store'])
+        ->name('lawyer.documents.store');
+
+    Route::get('/lawyer/documents/{document}/download', [DocumentController::class,'download'])
+        ->name('lawyer.documents.download');
 });
 
 Route::middleware(['auth', 'role:client'])->group(function () {
@@ -134,8 +146,14 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::get('/client/cases/{legalCase}/appeal', [CaseRequestController::class,'appealForm'])
         ->name('client.cases.appeal');
 
-Route::post('/client/cases/{legalCase}/appeal', [CaseRequestController::class,'appealStore'])
-        ->name('client.cases.appeal.store');
+    Route::put('/client/cases/{legalCase}/appeal', [CaseRequestController::class,'submitAppeal'])
+        ->name('client.appeal.submit');
+
+    Route::get('/client/cases/{legalCase}/documents', [ClientDocumentController::class,'index'])
+        ->name('client.documents');
+
+    Route::get('/client/documents/{document}/download', [ClientDocumentController::class,'download'])
+        ->name('client.documents.download');
 });
 
 Route::middleware(['auth', 'role:court_clerk'])->group(function () {
@@ -152,11 +170,17 @@ Route::middleware(['auth', 'role:court_clerk'])->group(function () {
     Route::put('/court-clerk/filings/{legalCase}', [CaseController::class,'verify'])
         ->name('court_clerk.filings.verify');
 
+    Route::get('/court-clerk/judgments', [CaseController::class, 'judgments'])
+        ->name('court_clerk.judgments');
+
     Route::get('/court-clerk/judgments/{legalCase}', [CaseController::class,'judgmentForm'])
         ->name('court_clerk.judgments.form');
 
     Route::put('/court-clerk/judgments/{legalCase}', [CaseController::class,'publishJudgment'])
         ->name('court_clerk.judgments.publish');
+
+    Route::get('/court-clerk/hearings', [CaseController::class, 'hearings'])
+        ->name('court_clerk.hearings');
 
     Route::get('/court-clerk/hearings/{legalCase}', [CaseController::class, 'hearingForm'])
         ->name('court_clerk.hearings.form');
@@ -164,12 +188,22 @@ Route::middleware(['auth', 'role:court_clerk'])->group(function () {
     Route::put('/court-clerk/hearings/{legalCase}', [CaseController::class, 'scheduleHearing'])
         ->name('court_clerk.hearings.schedule');
 
+    Route::get('/court-clerk/hearing-result/{legalCase}', [CaseController::class,'resultForm'])
+        ->name('court_clerk.hearing.result');
+
+    Route::put('/court-clerk/hearing-result/{legalCase}', [CaseController::class,'saveResult'])
+        ->name('court_clerk.hearing.save');
+
+    Route::get('/court-clerk/appeals', [CaseController::class,'appeals'])
+        ->name('court_clerk.appeals');
+
+    Route::get('/court-clerk/cases/{legalCase}/documents',
+    [CourtClerkDocumentController::class,'index'])
+        ->name('court_clerk.documents');
+
+    Route::get('/court-clerk/documents/{document}/download',
+    [CourtClerkDocumentController::class,'download'])
+        ->name('court_clerk.documents.download');
 });
-
-Route::post('/cases/{legalCase}/documents', [DocumentController::class,'store'])
-    ->name('documents.store');
-
-Route::get('/documents/{document}', [DocumentController::class,'download'])
-    ->name('documents.download');
 
 require __DIR__.'/auth.php';

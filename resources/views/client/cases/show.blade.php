@@ -74,16 +74,79 @@
             </div>
         </div>
 
+        <div class="card mt-4">
+    <div class="card-header">
+        Submitted Court Documents
+    </div>
+
+    <div class="card-body">
+
+        @if($legalCase->documents->count())
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Uploaded By</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                @foreach($legalCase->documents as $document)
+
+                    <tr>
+                        <td>{{ $document->title }}</td>
+                        <td>{{ $document->document_type }}</td>
+                        <td>{{ $document->uploader->name }}</td>
+                        <td>
+                            <a href="{{ route('lawyer.documents.download',$document) }}"
+                               class="btn btn-success btn-sm">
+                                Download
+                            </a>
+                        </td>
+                        <a href="{{ route('client.documents',$legalCase) }}"
+                           class="bg-blue-600 text-white px-4 py-2 rounded">
+                            📄 View Documents
+                        </a>
+                    </tr>
+
+                @endforeach
+
+                </tbody>
+
+            </table>
+
+        @else
+
+            <p>No documents uploaded.</p>
+
+        @endif
+
+    </div>
+</div>
+
         <div class="bg-white rounded-lg shadow p-6 mt-6">
 
         @if($legalCase->status == 'Resolved' && !$legalCase->appealed)
 
-        <a href="{{ route('client.cases.appeal',$legalCase) }}"
-        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded">
-            Appeal to Higher Court
-        </a>
+<form method="POST"
+      action="{{ route('client.appeal',$legalCase) }}">
 
-        @endif
+    @csrf
+
+    <button class="btn btn-warning">
+
+        Appeal Judgment
+
+    </button>
+
+</form>
+
+@endif
 
         @if($legalCase->appealed)
 

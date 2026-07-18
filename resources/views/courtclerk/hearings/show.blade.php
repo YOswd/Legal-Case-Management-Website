@@ -86,6 +86,18 @@ Schedule Hearing
 
 </form>
 
+<div class="mt-5">
+
+<label>Courtroom</label>
+
+<input
+type="text"
+name="courtroom"
+class="w-full border rounded p-3"
+placeholder="Room 205">
+
+</div>
+
 </div>
 
 @endsection

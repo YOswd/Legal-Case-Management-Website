@@ -33,6 +33,9 @@
         <a href="{{ route('lawyer.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
             🏠 Dashboard
         </a>
+        <a href="{{ route('lawyer.requests') }}" class="block p-3 rounded hover:bg-gray-700">
+            📩 Client Requests
+        </a>
         <a href="{{ route('lawyer.cases') }}" class="block p-3 rounded hover:bg-gray-700">
             ⚖️ My Cases
         </a>
@@ -45,11 +48,14 @@
         <a href="{{ route('client.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
             🏠 Dashboard
         </a>
-        <a href="{{ route('client.cases') }}" class="block p-3 rounded hover:bg-gray-700">
-            ⚖️ My Legal Cases
-        </a>
         <a href="{{ route('lawyers.index') }}" class="block p-3 rounded hover:bg-gray-700">
             👨‍⚖️ Browse Lawyers
+        </a>
+        <a href="{{ route('client.requests') }}" class="block p-3 rounded hover:bg-gray-700">
+            📩 My Requests
+        </a>
+        <a href="{{ route('client.cases') }}" class="block p-3 rounded hover:bg-gray-700">
+            ⚖️ My Legal Cases
         </a>
 
     @elseif(Auth::user()->role == 'court_clerk')
@@ -60,10 +66,10 @@
         <a href="{{ route('court_clerk.filings') }}" class="block p-3 rounded hover:bg-gray-700">
             📂 Pending Filings
         </a>
-        <a href="{{ route('court_clerk.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
+        <a href="{{ route('court_clerk.hearings') }}" class="block p-3 rounded hover:bg-gray-700">
             📅 Hearing Schedule
         </a>
-        <a href="{{ route('court_clerk.dashboard') }}#" class="block p-3 rounded hover:bg-gray-700">
+        <a href="{{ route('court_clerk.judgments') }}" class="block p-3 rounded hover:bg-gray-700">
             ⚖ Judgments
         </a>
 
@@ -99,7 +105,41 @@
         </div>
     </header>
     <div class="p-8">
-        @yield('content')
+
+    {{-- Success Message --}}
+    @if(session('success'))
+
+        <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            {{ session('success') }}
+        </div>
+
+    @endif
+
+    {{-- Error Message --}}
+    @if(session('error'))
+
+        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+
+            {{ session('error') }}
+
+        </div>
+
+    @endif
+
+    {{-- Validation Errors --}}
+    @if($errors->any())
+
+        <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <ul class="list-disc ml-5">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+
+    @endif
+
+    @yield('content')
     </div>
     </main>
 </div>
