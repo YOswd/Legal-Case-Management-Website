@@ -17,39 +17,44 @@ class CaseRequestController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
+{
+    $request->validate([
+        'lawyer_id' => 'required|exists:users,id',
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'budget' => 'nullable|integer|min:0',
+        'documents.*' => 'nullable|file|max:5120',
+    ]);
 
-            'lawyer_id' => 'required|exists:users,id',
+    $caseRequest = CaseRequest::create([
+        'client_id' => auth()->id(),
+        'lawyer_id' => $request->lawyer_id,
+        'title' => $request->title,
+        'description' => $request->description,
+        'budget' => $request->budget,
+        'status' => 'Pending',
+    ]);
 
-            'title' => 'required|max:255',
+    if ($request->hasFile('documents')) {
 
-            'description' => 'required',
+        foreach ($request->file('documents') as $file) {
 
-            'budget' => 'nullable|integer|min:0',
+            $path = $file->store('legal_documents', 'public');
 
-        ]);
-
-        CaseRequest::create([
-
-            'client_id' => Auth::id(),
-
-            'lawyer_id' => $request->lawyer_id,
-
-            'title' => $request->title,
-
-            'description' => $request->description,
-
-            'budget' => $request->budget,
-
-            'status' => 'Pending',
-
-        ]);
-
-        return redirect()
-            ->route('client.dashboard')
-            ->with('success', 'Case request sent successfully.');
+            \App\Models\LegalDocument::create([
+                'case_request_id' => $caseRequest->id,
+                'title' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
+                'document_type' => $file->getClientOriginalExtension(),
+                'file_path' => $path,
+                'uploaded_by' => auth()->id(),
+            ]);
+        }
     }
+
+    return redirect()
+        ->route('client.dashboard')
+        ->with('success', 'Case request sent successfully.');
+}
 
     public function index()
     {
@@ -168,7 +173,8 @@ class CaseRequestController extends Controller
     public function submitAppeal(Request $request, LegalCase $legalCase)
     {
         $request->validate([
-            'appeal_court'=>'required'
+            'appeal_court'=>'required',
+            'documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
         $legalCase->update([

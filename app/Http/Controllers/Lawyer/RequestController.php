@@ -41,14 +41,15 @@ class RequestController extends Controller
         }
 
         // Create the legal case
-        LegalCase::firstOrCreate(
+        $legalCase = LegalCase::firstOrCreate(
         [
             'case_request_id' => $caseRequest->id,
         ],
         [
             'client_id'       => $caseRequest->client_id,
             'lawyer_id'       => $caseRequest->lawyer_id,
-            'case_number'     => 'CASE-' . now()->format('Y') . '-' . str_pad($caseRequest->id, 5, '0', STR_PAD_LEFT),
+            'case_number'     => 'CASE-' . now()->format('Y') . '-' 
+            . str_pad($caseRequest->id, 5, '0', STR_PAD_LEFT),
             'title'           => $caseRequest->title,
             'description'     => $caseRequest->description,
             'case_type'       => 'Civil',
@@ -58,6 +59,12 @@ class RequestController extends Controller
             'court_name'      => 'Not Assigned',
         ]
         );
+
+        \App\Models\LegalDocument::where('case_request_id', $caseRequest->id)
+        ->update([
+            'legal_case_id' => $legalCase->id,
+            'case_request_id' => null,
+        ]);
 
         return redirect()
             ->route('lawyer.requests')
@@ -79,7 +86,10 @@ class RequestController extends Controller
     {
         abort_if($caseRequest->lawyer_id != auth()->id(),403);
 
-        $caseRequest->load('client');
+        $caseRequest->load([
+            'client',
+            'documents',
+        ]);
 
         return view('lawyer.requests.show', compact('caseRequest'));
     }

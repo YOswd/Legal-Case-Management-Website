@@ -6,84 +6,128 @@
     Case Documents
 </h1>
 
+@if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 p-4 rounded mb-6">
+        {{ session('success') }}
+    </div>
+@endif
 
-<div class="bg-white shadow rounded p-6">
+{{-- Upload Form --}}
+<div class="bg-white shadow rounded p-6 mb-8">
 
+    <h2 class="text-xl font-semibold mb-4">
+        Upload Supporting Document
+    </h2>
 
-<table class="w-full">
+    <form method="POST"
+          action="{{ route('client.documents.store', $legalCase) }}"
+          enctype="multipart/form-data">
 
-<thead>
+        @csrf
 
-<tr class="border-b">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-<th class="p-3 text-left">
-Title
-</th>
+            <div>
+                <label class="block mb-2 font-medium">
+                    Document Title
+                </label>
 
-<th class="p-3 text-left">
-Type
-</th>
+                <input type="text"
+                       name="title"
+                       class="w-full border rounded p-2"
+                       required>
+            </div>
 
-<th class="p-3 text-left">
-Action
-</th>
+            <div>
+                <label class="block mb-2 font-medium">
+                    Document Type
+                </label>
 
-</tr>
+                <select name="document_type"
+                        class="w-full border rounded p-2"
+                        required>
+                    <option value="">Select</option>
+                    <option>National ID</option>
+                    <option>Passport</option>
+                    <option>Contract</option>
+                    <option>Property Document</option>
+                    <option>Medical Report</option>
+                    <option>Police Report</option>
+                    <option>Photograph</option>
+                    <option>Evidence</option>
+                    <option>Other</option>
+                </select>
+            </div>
 
-</thead>
+        </div>
 
+        <div class="mt-4">
 
-<tbody>
+            <label class="block mb-2 font-medium">
+                Choose File
+            </label>
 
-@forelse($documents as $document)
+            <input type="file"
+                   name="file"
+                   class="w-full border rounded p-2"
+                   required>
 
-<tr class="border-b">
+        </div>
 
-<td class="p-3">
-{{ $document->title }}
-</td>
+        <button class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded">
+            Upload Document
+        </button>
 
-
-<td class="p-3">
-{{ $document->document_type }}
-</td>
-
-
-<td class="p-3">
-
-<a href="{{ route('client.documents.download',$document) }}"
-class="text-blue-600">
-
-Download
-
-</a>
-
-</td>
-
-</tr>
-
-
-@empty
-
-<tr>
-
-<td colspan="3" class="p-4 text-center">
-
-No documents uploaded yet.
-
-</td>
-
-</tr>
-
-@endforelse
-
-
-</tbody>
-
-</table>
-
+    </form>
 
 </div>
 
+{{-- Documents List --}}
+<div class="bg-white shadow rounded p-6">
+
+    <table class="w-full">
+
+        <thead>
+        <tr class="border-b">
+            <th class="p-3 text-left">Title</th>
+            <th class="p-3 text-left">Type</th>
+            <th class="p-3 text-left">Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        @forelse($documents as $document)
+
+            <tr class="border-b">
+                <td class="p-3">
+                    {{ $document->title }}
+                </td>
+                <td class="p-3">
+                    {{ $document->document_type }}
+                </td>
+                <td class="p-3">
+                    <a href="{{ route('client.documents.download',$document) }}"
+                       class="text-blue-600">
+                        Download
+                    </a>
+                </td>
+            </tr>
+
+        @empty
+
+            <tr>
+                <td colspan="3" class="p-4 text-center">
+                    No documents uploaded yet.
+                </td>
+            </tr>
+
+        @endforelse
+
+        </tbody>
+
+    </table>
+
+</div>
 
 @endsection

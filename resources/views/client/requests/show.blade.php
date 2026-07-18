@@ -35,13 +35,6 @@
 
         </div>
 
-        <div class="mt-8">
-        <h2 class="text-xl font-bold mb-3">Description</h2>
-        <div class="bg-gray-100 rounded p-5">
-            {{ $caseRequest->description }}
-        </div>
-        </div>
-
         @if($caseRequest->status == 'Pending')
 
         <div class="mt-8 flex gap-4">

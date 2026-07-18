@@ -152,6 +152,12 @@ Route::middleware(['auth', 'role:client'])->group(function () {
     Route::get('/client/cases/{legalCase}/documents', [ClientDocumentController::class,'index'])
         ->name('client.documents');
 
+    Route::get('/client/documents', [ClientDocumentController::class, 'all'])
+        ->name('client.documents.all');
+
+    Route::post('/client/cases/{legalCase}/documents', [ClientDocumentController::class,'store'])
+        ->name('client.documents.store');
+
     Route::get('/client/documents/{document}/download', [ClientDocumentController::class,'download'])
         ->name('client.documents.download');
 });

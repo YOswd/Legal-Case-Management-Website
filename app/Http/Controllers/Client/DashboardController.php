@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Models\LegalCase;
 use App\Models\CaseRequest;
+use App\Models\LegalDocument;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -27,12 +28,16 @@ class DashboardController extends Controller
             ->where('status','Pending')
             ->count();
 
+        $myDocuments = LegalDocument::where('uploaded_by', auth()->id())
+            ->count();
+
 
         return view('client.dashboard', compact(
             'totalCases',
             'activeCases',
             'resolvedCases',
-            'pendingRequests'
+            'pendingRequests',
+            'myDocuments'
         ));
     }
 }

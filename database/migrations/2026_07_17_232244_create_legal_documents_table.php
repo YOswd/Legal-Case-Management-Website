@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('legal_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('legal_case_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('legal_case_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->string('document_type');
             $table->string('file_path');

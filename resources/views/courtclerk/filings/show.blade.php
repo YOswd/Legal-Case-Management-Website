@@ -2,58 +2,61 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+<div class="max-w-5xl mx-auto">
 
-    <h2 class="text-3xl font-bold mb-6">
-        Verify Court Filing
-    </h2>
+    <div class="bg-white rounded-lg shadow p-8">
 
-    <div class="grid grid-cols-2 gap-6 mb-8">
+        <h1 class="text-3xl font-bold mb-8">
+            Verify Court Filing
+        </h1>
 
-        <div>
-            <label class="font-semibold">Client</label>
-            <p>{{ $legalCase->client->name }}</p>
+        {{-- Case Information --}}
+
+        <div class="grid grid-cols-2 gap-6 mb-10">
+
+            <div>
+                <p class="font-semibold">Client</p>
+                <p>{{ $legalCase->client->name }}</p>
+            </div>
+
+            <div>
+                <p class="font-semibold">Lawyer</p>
+                <p>{{ $legalCase->lawyer->name }}</p>
+            </div>
+
+            <div>
+                <p class="font-semibold">Case Number</p>
+                <p>{{ $legalCase->case_number }}</p>
+            </div>
+
+            <div>
+                <p class="font-semibold">Case Type</p>
+                <p>{{ $legalCase->case_type }}</p>
+            </div>
+
         </div>
 
-        <div>
-            <label class="font-semibold">Lawyer</label>
-            <p>{{ $legalCase->lawyer->name }}</p>
-        </div>
+        {{-- Documents --}}
 
-        <div>
-            <label class="font-semibold">Case Number</label>
-            <p>{{ $legalCase->case_number }}</p>
-        </div>
+        <h2 class="text-2xl font-bold mb-4">
+            Submitted Documents
+        </h2>
 
-        <div>
-            <label class="font-semibold">Case Type</label>
-            <p>{{ $legalCase->case_type }}</p>
-        </div>
+        <div class="border rounded-lg overflow-hidden mb-10">
 
-    </div>
+            <table class="w-full">
 
-    <div class="card mt-4">
-    <div class="card-header">
-        Submitted Court Documents
-    </div>
-
-    <div class="card-body">
-
-        @if($legalCase->documents->count())
-
-            <table class="table">
-
-                <thead>
+                <thead class="bg-gray-100">
 
                     <tr>
 
-                        <th>Title</th>
+                        <th class="p-3 text-left">Title</th>
 
-                        <th>Type</th>
+                        <th class="p-3 text-left">Type</th>
 
-                        <th>Uploaded By</th>
+                        <th class="p-3 text-left">Uploaded By</th>
 
-                        <th>Download</th>
+                        <th class="p-3 text-left">Download</th>
 
                     </tr>
 
@@ -61,21 +64,26 @@
 
                 <tbody>
 
-                @foreach($legalCase->documents as $document)
+                @forelse($legalCase->documents as $document)
 
-                    <tr>
+                    <tr class="border-t">
 
-                        <td>{{ $document->title }}</td>
+                        <td class="p-3">
+                            {{ $document->title }}
+                        </td>
 
-                        <td>{{ $document->document_type }}</td>
+                        <td class="p-3">
+                            {{ $document->document_type }}
+                        </td>
 
-                        <td>{{ $document->uploader->name }}</td>
+                        <td class="p-3">
+                            {{ $document->uploader->name }}
+                        </td>
 
-                        <td>
+                        <td class="p-3">
 
-                            <a
-                                href="{{ route('lawyer.documents.download',$document) }}"
-                                class="btn btn-success btn-sm">
+                            <a href="{{ route('court_clerk.documents.download',$document) }}"
+                               class="text-blue-600 hover:underline">
 
                                 Download
 
@@ -85,195 +93,129 @@
 
                     </tr>
 
-                @endforeach
+                @empty
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center p-5 text-gray-500">
+
+                            No documents uploaded.
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
 
                 </tbody>
 
             </table>
 
-        @else
+        </div>
 
-            <p>No documents uploaded.</p>
+        {{-- Verification Form --}}
 
-        @endif
+        <h2 class="text-2xl font-bold mb-4">
+            Court Assignment
+        </h2>
 
-    </div>
-</div>
+        <form method="POST"
+              action="{{ route('court_clerk.filings.verify',$legalCase) }}">
 
-    <form method="POST" action="{{ route('court_clerk.filings.verify',$legalCase) }}">
+            @csrf
+            @method('PUT')
 
-        @csrf
-        @method('PUT')
+            <div class="mb-5">
 
-        <div class="mb-5">
+                <label class="block font-semibold mb-2">
+                    Court Level
+                </label>
 
-            <label class="block font-semibold mb-2">
-                Court Level
-            </label>
+                <select name="court_level"
+                        class="w-full border rounded p-3"
+                        required>
 
-            <select name="court_level"
+                    <option value="">Select Court</option>
+
+                    <option>District Court</option>
+
+                    <option>High Court</option>
+
+                    <option>Supreme Court</option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-5">
+
+                <label class="block font-semibold mb-2">
+                    Court Name
+                </label>
+
+                <input
+                    type="text"
+                    name="court_name"
+                    value="{{ $legalCase->court_name }}"
                     class="w-full border rounded p-3"
                     required>
 
-                <option value="">Select Court</option>
+            </div>
 
-                <option>District Court</option>
+            <div class="grid grid-cols-2 gap-6">
 
-                <option>High Court</option>
+                <div>
 
-                <option>Supreme Court</option>
+                    <label class="block font-semibold mb-2">
+                        Hearing Date
+                    </label>
 
-            </select>
+                    <input
+                        type="date"
+                        name="hearing_date"
+                        class="w-full border rounded p-3"
+                        required>
 
-        </div>
+                </div>
 
-        <div class="mb-5">
+                <div>
 
-            <label class="block font-semibold mb-2">
-                Court Name
-            </label>
+                    <label class="block font-semibold mb-2">
+                        Hearing Time
+                    </label>
 
-            <input type="text"
-                   name="court_name"
-                   value="{{ $legalCase->court_name }}"
-                   class="w-full border rounded p-3"
-                   required>
+                    <input
+                        type="time"
+                        name="hearing_time"
+                        class="w-full border rounded p-3"
+                        required>
 
-        </div>
-
-        <div class="grid grid-cols-2 gap-6">
-
-            <div>
-
-                <label class="block font-semibold mb-2">
-                    Hearing Date
-                </label>
-
-                <input type="date"
-                       name="hearing_date"
-                       class="w-full border rounded p-3"
-                       required>
+                </div>
 
             </div>
 
-            <div>
+            <div class="mt-8 flex gap-4">
 
-                <label class="block font-semibold mb-2">
-                    Hearing Time
-                </label>
+                <button
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded">
 
-                <input type="time"
-                       name="hearing_time"
-                       class="w-full border rounded p-3"
-                       required>
+                    Verify Filing
+
+                </button>
+
+                <a href="{{ route('court_clerk.hearings.form',$legalCase) }}"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded">
+
+                    Schedule Hearing
+
+                </a>
 
             </div>
 
-        </div>
+        </form>
 
-        <button class="mt-8 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded">
-            Verify Filing
-        </button>
-
-        <a href="{{ route('court_clerk.hearings.form',$legalCase) }}"
-        class="bg-blue-600 text-white px-5 py-2 rounded">
-            Schedule Hearing
-        </a>
-
-    </form>
-
-    <form
-method="POST"
-action="{{ route('documents.store',$legalCase) }}"
-enctype="multipart/form-data">
-
-@csrf
-
-<input
-type="text"
-name="title"
-placeholder="Document Title"
-class="border rounded p-2 w-full mb-2">
-
-<select
-name="document_type"
-class="border rounded p-2 w-full mb-2">
-
-<option>Evidence</option>
-
-<option>Legal Notice</option>
-
-<option>Judgment</option>
-
-<option>Other</option>
-
-</select>
-
-<input
-type="file"
-name="file"
-class="mb-3">
-
-<button
-class="bg-green-600 text-white px-5 py-2 rounded">
-
-Upload Document
-
-</button>
-
-</form>
-
-<h3 class="text-xl font-bold mt-8">
-
-Documents
-
-</h3>
-
-<table class="w-full mt-3">
-
-<thead>
-
-<tr>
-
-<th>Title</th>
-
-<th>Type</th>
-
-<th>Download</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-@foreach($legalCase->documents as $document)
-
-<tr>
-
-<td>{{ $document->title }}</td>
-
-<td>{{ $document->document_type }}</td>
-
-<td>
-
-<a
-href="{{ route('documents.download',$document) }}"
-class="text-blue-600">
-
-Download
-
-</a>
-
-</td>
-
-</tr>
-
-@endforeach
-
-</tbody>
-
-</table>
+    </div>
 
 </div>
 

@@ -48,14 +48,17 @@
         <a href="{{ route('client.dashboard') }}" class="block p-3 rounded hover:bg-gray-700">
             🏠 Dashboard
         </a>
-        <a href="{{ route('lawyers.index') }}" class="block p-3 rounded hover:bg-gray-700">
-            👨‍⚖️ Browse Lawyers
+        <a href="{{ route('client.cases') }}" class="block p-3 rounded hover:bg-gray-700">
+            ⚖️ My Legal Cases
         </a>
         <a href="{{ route('client.requests') }}" class="block p-3 rounded hover:bg-gray-700">
             📩 My Requests
         </a>
-        <a href="{{ route('client.cases') }}" class="block p-3 rounded hover:bg-gray-700">
-            ⚖️ My Legal Cases
+        <a href="{{ route('client.documents.all') }}" class="block p-3 rounded hover:bg-gray-700">
+            📄 My Documents
+         </a>
+        <a href="{{ route('lawyers.index') }}" class="block p-3 rounded hover:bg-gray-700">
+            👨‍⚖️ Browse Lawyers
         </a>
 
     @elseif(Auth::user()->role == 'court_clerk')

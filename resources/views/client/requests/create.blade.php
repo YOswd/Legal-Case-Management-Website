@@ -13,7 +13,7 @@
             <strong>{{ $lawyer->name }}</strong>
         </p>
 
-        <form method="POST" action="{{ route('requests.store') }}">
+        <form method="POST" action="{{ route('requests.store') }}" enctype="multipart/form-data">
             @csrf
             <input
                 type="hidden"
@@ -52,6 +52,18 @@
                     class="w-full border rounded p-2">
 
             </div>
+
+            <div class="mt-6">
+
+                <label class="block font-medium mb-2">Supporting Documents</label>
+
+                <input type="file" name="documents[]" multiple class="w-full border rounded p-2">
+
+                <p class="text-sm text-gray-500 mt-2">
+                    You may upload contracts, evidence, IDs, reports, photos, etc.
+                </p>
+
+           </div>
 
             <button
                 class="bg-blue-600 text-white px-6 py-3 rounded">

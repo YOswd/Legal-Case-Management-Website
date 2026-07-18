@@ -88,6 +88,65 @@
 
         </div>
 
+        <div class="mt-8">
+
+    <h2 class="text-xl font-bold mb-3">
+        Supporting Documents
+    </h2>
+
+    @if($caseRequest->documents->count())
+
+        <table class="w-full border">
+
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border p-2 text-left">Title</th>
+                    <th class="border p-2 text-left">Type</th>
+                    <th class="border p-2 text-left">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            @foreach($caseRequest->documents as $document)
+
+                <tr>
+
+                    <td class="border p-2">
+                        {{ $document->title }}
+                    </td>
+
+                    <td class="border p-2">
+                        {{ strtoupper($document->document_type) }}
+                    </td>
+
+                    <td class="border p-2">
+
+                        <a href="{{ route('lawyer.documents.download', $document) }}"
+                           class="text-blue-600 underline">
+                            Download
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            @endforeach
+
+            </tbody>
+
+        </table>
+
+    @else
+
+        <p class="text-gray-500">
+            No supporting documents uploaded.
+        </p>
+
+    @endif
+
+</div>
+
         @if($caseRequest->status == 'Pending')
 
         <div class="mt-8 flex gap-4">

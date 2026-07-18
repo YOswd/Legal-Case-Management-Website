@@ -12,6 +12,7 @@ class LegalDocument extends Model
 
     protected $fillable = [
         'legal_case_id',
+        'case_request_id',
         'title',
         'document_type',
         'file_path',
@@ -21,6 +22,11 @@ class LegalDocument extends Model
     public function legalCase()
     {
         return $this->belongsTo(LegalCase::class);
+    }
+
+    public function caseRequest()
+    {
+        return $this->belongsTo(CaseRequest::class);
     }
 
     public function uploader()

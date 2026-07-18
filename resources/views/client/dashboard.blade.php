@@ -7,8 +7,7 @@
 </h2>
 
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
 
     <div class="bg-white rounded-lg shadow p-6">
 
@@ -22,8 +21,6 @@
 
     </div>
 
-
-
     <div class="bg-white rounded-lg shadow p-6">
 
         <h3 class="text-gray-500">
@@ -35,8 +32,6 @@
         </p>
 
     </div>
-
-
 
     <div class="bg-white rounded-lg shadow p-6">
 
@@ -50,8 +45,6 @@
 
     </div>
 
-
-
     <div class="bg-white rounded-lg shadow p-6">
 
         <h3 class="text-gray-500">
@@ -64,6 +57,15 @@
 
     </div>
 
+    <div class="p-5 bg-white rounded shadow">
+
+    <h3>My Documents</h3>
+
+    <p class="text-3xl">
+        {{ $myDocuments }}
+    </p>
+
+    </div>
 
 </div>
 

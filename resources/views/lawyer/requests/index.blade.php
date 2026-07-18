@@ -42,14 +42,10 @@
             <td class="border p-2">
                 @if($request->status == 'Pending')
                     <div class="flex gap-2">
-                        <form method="POST"
-                              action="{{ route('lawyer.requests.show',$request) }}">
-                            @csrf
-                            @method('PATCH')
-                            <button class="bg-green-600 text-white px-3 py-1 rounded">
-                                View
-                            </button>
-                        </form>
+                        <a href="{{ route('lawyer.requests.show', $request) }}"
+                           class="bg-blue-600 text-white px-3 py-1 rounded inline-block">
+                            View
+                        </a>
                         <form method="POST"
                               action="{{ route('requests.accept', $request) }}">
                             @csrf

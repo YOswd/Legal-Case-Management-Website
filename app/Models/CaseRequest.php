@@ -31,4 +31,9 @@ class CaseRequest extends Model
     {
         return $this->hasOne(LegalCase::class);
     }
+
+    public function documents()
+    {
+        return $this->hasMany(LegalDocument::class);
+    }
 }
