@@ -39,4 +39,62 @@ class UserController extends Controller
             ->route('admin.users.show', $user)
             ->with('success', 'User updated successfully.');
     }
+
+    public function pendingVerification()
+{
+    $users = User::whereIn('role', ['lawyer','court_clerk'])
+                ->where('is_verified', false)
+                ->latest()
+                ->get();
+
+    return view(
+        'admin.users.verification',
+        compact('users')
+    );
+}
+
+public function verify(User $user)
+{
+    $user->update([
+        'is_verified' => true
+    ]);
+
+    return back()
+        ->with('success','User verified successfully.');
+}
+
+public function reject(User $user)
+{
+    $user->delete();
+
+    return back()
+        ->with('success','Registration rejected.');
+}
+
+public function create()
+{
+    return view('admin.users.create');
+}
+
+public function store(Request $request)
+{
+    $request->validate([
+        'name'=>'required',
+        'email'=>'required|email|unique:users',
+        'password'=>'required|min:8',
+        'role'=>'required|in:lawyer,court_clerk',
+    ]);
+
+    User::create([
+        'name'=>$request->name,
+        'email'=>$request->email,
+        'password'=>bcrypt($request->password),
+        'role'=>$request->role,
+        'is_verified'=>true,
+    ]);
+
+    return redirect()
+        ->route('admin.users.index')
+        ->with('success','User created successfully.');
+}
 }

@@ -16,6 +16,7 @@ use App\Http\Controllers\Lawyer\LegalCaseController as LawyerLegalCaseController
 use App\Http\Controllers\CourtClerk\DashboardController as CourtClerkDashboardController;
 use App\Http\Controllers\CourtClerk\DocumentController as CourtClerkDocumentController;
 use App\Http\Controllers\CourtClerk\CaseController;
+use App\Http\Controllers\HolidayController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PublicController::class)->group(function () {
@@ -65,6 +66,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::put('/admin/users/{user}', [UserController::class, 'update'])
         ->name('admin.users.update');
+
+    Route::get('/admin/verifications', [UserController::class, 'pendingVerification'])
+    ->name('admin.verifications');
+
+Route::put('/admin/users/{user}/verify', [UserController::class, 'verify'])
+    ->name('admin.users.verify');
+
+Route::delete('/admin/users/{user}/reject', [UserController::class, 'reject'])
+    ->name('admin.users.reject');
+    
+    Route::get('/admin/users/create', [UserController::class,'create'])
+    ->name('admin.users.create');
+
+Route::post('/admin/users', [UserController::class,'store'])
+    ->name('admin.users.store');
 
 });
 
@@ -211,5 +227,8 @@ Route::middleware(['auth', 'role:court_clerk'])->group(function () {
     [CourtClerkDocumentController::class,'download'])
         ->name('court_clerk.documents.download');
 });
+
+Route::get('/holidays', [HolidayController::class,'index'])
+    ->name('holidays');
 
 require __DIR__.'/auth.php';

@@ -79,9 +79,15 @@ class LegalCaseController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
+{
+    $case = LegalCase::with([
+        'client',
+        'lawyer',
+        'documents',
+    ])->findOrFail($id);
+
+    return view('admin.cases.show', compact('case'));
+}
 
     /**
      * Show the form for editing the specified resource.

@@ -30,6 +30,16 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-400" />
         </div>
 
+        <div>
+            <label for="role" class="block text-sm font-medium text-slate-300 mb-1">Role</label>
+            <input id="role" class="block w-full rounded-xl bg-slate-900/50 border
+            border-slate-700/50 text-white placeholder-slate-400
+            focus:border-indigo-500 focus:ring-indigo-500
+            dark:bg-slate-900/50" type="text" name="role"
+            :value="old('email')" required autocomplete="username" placeholder="Enter your role" />
+            <x-input-error :messages="$errors->get('role')" class="mt-2 text-red-400" />
+        </div>
+
         <!-- Password -->
         <div>
             <label for="password" class="block text-sm font-medium text-slate-300 mb-1">Password</label>

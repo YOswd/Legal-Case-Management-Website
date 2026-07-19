@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CourtClerk;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LegalCase;
+use Illuminate\Support\Facades\Http;
 
 class CaseController extends Controller
 {
@@ -34,6 +35,32 @@ class CaseController extends Controller
             'hearing_date' => 'required|date',
             'hearing_time' => 'required'
         ]);
+
+        // Check weekend
+        $dayOfWeek = date('N', strtotime($request->hearing_date));
+        if ($dayOfWeek == 5 || $dayOfWeek == 6) {
+            return back()
+                ->withErrors(['hearing_date' => 'Hearings cannot be scheduled on weekends (Friday/Saturday). Please choose a working day.'])
+                ->withInput();
+        }
+
+        // Check Bangladesh public holidays
+        $year = date('Y', strtotime($request->hearing_date));
+        $response = Http::timeout(10)->get("https://date.nager.at/api/v3/PublicHolidays/$year/BD");
+
+        if ($response->successful()) {
+            $holidays = collect($response->json());
+            $isHoliday = $holidays->contains(function ($holiday) use ($request) {
+                return $holiday['date'] === $request->hearing_date;
+            });
+
+            if ($isHoliday) {
+                $holidayName = $holidays->firstWhere('date', $request->hearing_date)['name'] ?? 'a national holiday';
+                return back()
+                    ->withErrors(['hearing_date' => "The selected date is a Bangladesh public holiday ($holidayName). Please choose another date."])
+                    ->withInput();
+            }
+        }
 
         $legalCase->update([
             'court_name'   => $request->court_name,
@@ -81,6 +108,32 @@ class CaseController extends Controller
             'court_name' => 'required',
             'court_level' => 'required',
         ]);
+
+        // Check weekend
+        $dayOfWeek = date('N', strtotime($request->hearing_date));
+        if ($dayOfWeek == 5 || $dayOfWeek == 6) {
+            return back()
+                ->withErrors(['hearing_date' => 'Hearings cannot be scheduled on weekends (Friday/Saturday). Please choose a working day.'])
+                ->withInput();
+        }
+
+        // Check Bangladesh public holidays
+        $year = date('Y', strtotime($request->hearing_date));
+        $response = Http::timeout(10)->get("https://date.nager.at/api/v3/PublicHolidays/$year/BD");
+
+        if ($response->successful()) {
+            $holidays = collect($response->json());
+            $isHoliday = $holidays->contains(function ($holiday) use ($request) {
+                return $holiday['date'] === $request->hearing_date;
+            });
+
+            if ($isHoliday) {
+                $holidayName = $holidays->firstWhere('date', $request->hearing_date)['name'] ?? 'a national holiday';
+                return back()
+                    ->withErrors(['hearing_date' => "The selected date is a Bangladesh public holiday ($holidayName). Please choose another date."])
+                    ->withInput();
+            }
+        }
 
         $legalCase->update([
             'hearing_date' => $request->hearing_date,

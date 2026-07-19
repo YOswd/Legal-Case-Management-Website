@@ -34,6 +34,12 @@ required>
 
 </div>
 
+@error('hearing_date')
+    <p class="text-red-600 text-sm mt-2">
+        {{ $message }}
+    </p>
+@enderror
+
 <div class="mt-5">
 
 <label>Hearing Time</label>

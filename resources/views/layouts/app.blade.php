@@ -87,7 +87,7 @@
     <header class="bg-white shadow px-8 py-4 flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold">
-                Legal Case Management System
+                Digital Judiciary Sytem
             </h1>
         </div>
         <div class="flex items-center gap-4">
